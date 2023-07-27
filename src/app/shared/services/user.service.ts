@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { AngularFireDatabase, AngularFireList } from "@angular/fire/database";
 
-import * as moment from "moment";
+//import * as moment from "moment";
 import { User } from "../models/user";
 import { Product } from "../models/product";
 import { newArray } from "@angular/compiler/src/util";
-
+import { formatDate } from "@angular/common";
 
 @Injectable()
 export class UserService {
@@ -29,20 +29,17 @@ export class UserService {
       userArr = [...users];
     });
     return userArr;
-
   }
 
   getUserById(id: string) {
     debugger;
     const users = this.getUsers();
     return users.filter((user) => {
-      if(user.uid == id)
-        return user; 
+      if (user.uid == id) return user;
     })[0];
   }
 
   createUser(data: any) {
-    
     let products = new Array<Product>();
     products.push(new Product());
     products[0].productId = 0;
@@ -51,7 +48,7 @@ export class UserService {
       ...data,
       location: this.location,
       wishlist: products,
-      createdOn: moment(new Date()).format("X"),
+      createdOn: Date.now().toLocaleString("English"),
       isAdmin: false,
     };
     this.users.push(updatedData);
